@@ -16,8 +16,10 @@ defmodule TodoApp.Accounts do
     cond do
       user && Bcrypt.verify_pass(password, user.hashed_password) ->
         {:ok, user}
+
       user ->
         {:error, :invalid_password, :put_message, "Contraseña inválida"}
+
       true ->
         {:error, :user_not_found, :put_message, "Usuario no encontrado"}
     end
@@ -35,11 +37,11 @@ defmodule TodoApp.Accounts do
 
   def get_user_by_id(id) do
     Repo.get(Users, id)
+
     if id do
       {:ok, id}
     else
       {:error, :user_not_found, :put_message, "Usuario no encontrado"}
     end
   end
-
 end

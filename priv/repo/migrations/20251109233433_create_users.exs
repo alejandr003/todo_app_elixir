@@ -9,6 +9,7 @@ defmodule TodoApp.Repo.Migrations.CreateUsers do
       add :hashed_password, :string, null: false
       timestamps()
     end
+
     create unique_index(:users, [:email])
   end
 end

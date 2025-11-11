@@ -8,6 +8,7 @@ defmodule TodoAppWeb.AuthController do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         token = generate_user_token(conn, user)
+
         conn
         |> put_status(:created)
         |> json(%{
@@ -33,6 +34,7 @@ defmodule TodoAppWeb.AuthController do
     case Accounts.authenticate_user(email, password) do
       {:ok, user} ->
         token = generate_user_token(conn, user)
+
         conn
         |> put_status(:ok)
         |> json(%{

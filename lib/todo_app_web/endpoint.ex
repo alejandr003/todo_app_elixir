@@ -48,7 +48,8 @@ defmodule TodoAppWeb.Endpoint do
   if Application.compile_env(:todo_app, __MODULE__)[:cors_origins] do
     plug Plug.Cors,
       origins: Application.compile_env(:todo_app, __MODULE__)[:cors_origins],
-      allow_headers: ["Content-Type", "Authorization"] # Permite enviar JSON y tokens
+      # Permite enviar JSON y tokens
+      allow_headers: ["Content-Type", "Authorization"]
   end
 
   plug Plug.MethodOverride
