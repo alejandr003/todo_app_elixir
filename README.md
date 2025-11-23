@@ -13,9 +13,6 @@ To start this backend application:
   iex -S mix phx.server
   ```
 
-Now you can visit Postman or any API client.
----
-
 # 📋 API REST Endpoints — TodoApp
 
 ## ✅ 1️⃣ REGISTRO DE USUARIO
@@ -112,6 +109,135 @@ Content-Type: application/json
   "error": "Usuario no encontrado"
 }
 ```
+
+---
+## 4️⃣ 🔑 Recuperar y cambiar contraseña
+
+### Solicitar recuperación de contraseña
+**POST** `/api/password/forgot`
+
+**Body:**
+```json
+{
+  "email": "test@test.com"
+}
+```
+**Respuesta exitosa:**
+```json
+{
+  "message": "Si el correo existe, se ha enviado un email con instrucciones"
+}
+```
+
+### Cambiar contraseña con token
+**POST** `/api/password/reset`
+
+**Body:**
+```json
+{
+  "token": "<TOKEN_DEL_EMAIL>",
+  "password": "nueva_password"
+}
+```
+**Respuesta exitosa:**
+```json
+{
+  "message": "Contraseña actualizada exitosamente"
+}
+```
+
+---
+
+## 🚪 Logout (Cerrar sesión)
+
+**POST** `/api/logout`
+
+**Headers:**
+`Authorization: Bearer <JWT_TOKEN>`
+
+**Respuesta exitosa:**
+```json
+{
+  "message": "Sesión cerrada correctamente"
+}
+```
+---
+
+### 5️⃣ CRUD de Notas (requiere autenticación)
+---
+
+#### a) Listar notas
+**GET** `/api/notes`
+**Headers:** `Authorization: Bearer <JWT_TOKEN>`
+
+**Respuesta:**
+```json
+[
+  {
+    "id": 1,
+    "title": "Nota 1",
+    "content": "Contenido de la nota",
+    "inserted_at": "2025-11-23T00:00:00Z"
+  }
+]
+```
+
+#### b) Crear nota
+**POST** `/api/notes`
+**Headers:** `Authorization: Bearer <JWT_TOKEN>`
+**Body:**
+```json
+{
+  "title": "Nota nueva",
+  "content": "Texto de la nota"
+}
+```
+**Respuesta:**
+```json
+{
+  "id": 2,
+  "title": "Nota nueva",
+  "content": "Texto de la nota",
+  "inserted_at": "2025-11-23T00:00:00Z"
+}
+```
+
+#### c) Ver nota
+**GET** `/api/notes/:id`
+**Headers:** `Authorization: Bearer <JWT_TOKEN>`
+
+#### d) Actualizar nota
+**PUT** `/api/notes/:id`
+**Headers:** `Authorization: Bearer <JWT_TOKEN>`
+**Body:**
+```json
+{
+  "title": "Nuevo título",
+  "content": "Nuevo contenido"
+}
+```
+
+#### e) Eliminar nota
+**DELETE** `/api/notes/:id`
+**Headers:** `Authorization: Bearer <JWT_TOKEN>`
+
+---
+
+## Ejemplo de flujo completo (usando test@test.com)
+
+1. Registrar usuario con `/api/register`.
+2. Iniciar sesión con `/api/login` y guardar el `token`.
+3. Usar el `token` en el header `Authorization` para acceder a `/api/notes` (CRUD).
+4. Para recuperar contraseña, usar `/api/password/forgot` y seguir el link del email.
+5. Para cerrar sesión, llamar a `/api/logout` con el token.
+
+---
+
+## Notas
+- Todos los endpoints devuelven JSON.
+- El token se debe enviar en el header `Authorization` como `Bearer <token>` para endpoints protegidos.
+- El sistema está listo para integración con frontend web/mobile.
+- Emails de bienvenida y recuperación se envían usando Swoosh (en dev, revisa consola/logs).
 
 ---
 
