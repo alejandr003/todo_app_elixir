@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <title>TodoApp</title>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+  </head>
+  <body style="font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0;">
+    <%= @inner_content %>
+  </body>
+</html>

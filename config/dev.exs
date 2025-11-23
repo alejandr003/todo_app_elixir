@@ -1,14 +1,19 @@
 import Config
 
 # Configure your database
-config :todo_app, TodoApp.Repo,
-  username: "jesus",
-  password: "jesus31",
-  hostname: "localhost",
-  database: "todo_app",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+if config_env() == :dev do
+  database_url =
+    System.get_env("DATABASE_URL") ||
+      raise """
+      La variable de la Base de datos no se encuentra cargada.
+      Ejemplo Source .env contiene: ecto://USER:PASS@HOST/DATABASE
+      """
+
+  config :todo_app, TodoApp.Repo,
+    url: database_url,
+    show_sensitive_data_on_connection_error: true,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+end
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -24,7 +29,8 @@ config :todo_app, TodoAppWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "JSdpY1YomnAzyWSloSkJY4hkSF1mtdgLvKpgKbDKJU/2k06oIQhXvqw34w8WLZVC",
-  watchers: []
+  watchers: [],
+  frontend_url: "http://localhost:3000"
 
 # ## SSL Support
 #

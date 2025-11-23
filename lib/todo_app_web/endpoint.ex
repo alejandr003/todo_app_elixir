@@ -37,6 +37,7 @@ defmodule TodoAppWeb.Endpoint do
     param_key: "request_logger",
     cookie_key: "request_logger"
 
+  plug CORSPlug, origin: ["*"]
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
@@ -44,13 +45,6 @@ defmodule TodoAppWeb.Endpoint do
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
-
-  if Application.compile_env(:todo_app, __MODULE__)[:cors_origins] do
-    plug Plug.Cors,
-      origins: Application.compile_env(:todo_app, __MODULE__)[:cors_origins],
-      # Permite enviar JSON y tokens
-      allow_headers: ["Content-Type", "Authorization"]
-  end
 
   plug Plug.MethodOverride
   plug Plug.Head

@@ -11,6 +11,7 @@ config :todo_app,
   ecto_repos: [TodoApp.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+
 # Configures the endpoint
 config :todo_app, TodoAppWeb.Endpoint,
   url: [host: "localhost"],
@@ -20,7 +21,8 @@ config :todo_app, TodoAppWeb.Endpoint,
     layout: false
   ],
   pubsub_server: TodoApp.PubSub,
-  live_view: [signing_salt: "IgQPLH5B"]
+  live_view: [signing_salt: "IgQPLH5B"],
+  backend_url: System.get_env("BACKEND_URL") || "http://localhost:4000"
 
 # Configures the mailer
 #

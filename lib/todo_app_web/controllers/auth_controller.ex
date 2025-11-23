@@ -9,6 +9,10 @@ defmodule TodoAppWeb.AuthController do
       {:ok, user} ->
         token = generate_user_token(conn, user)
 
+        # Enviar email de bienvenida
+        url = Application.get_env(:todo_app, TodoAppWeb.Endpoint)[:backend_url] || "http://localhost:4000"
+        TodoApp.Emails.send_welcome_email(user, url)
+
         conn
         |> put_status(:created)
         |> json(%{
@@ -21,7 +25,7 @@ defmodule TodoAppWeb.AuthController do
             inserted_at: user.inserted_at,
             updated_at: user.updated_at
           }
-        })
+          })
 
       {:error, changeset} ->
         conn
@@ -60,6 +64,34 @@ defmodule TodoAppWeb.AuthController do
     end
   end
 
+
+  def forgot_password(conn, %{"email" => email}) do
+    url = Application.get_env(:todo_app, TodoAppWeb.Endpoint)[:backend_url] || "http://localhost:4000"
+    case Accounts.request_password_reset(email, url) do
+      {:ok, _token} ->
+        conn
+        |> put_status(:ok)
+        |> json(%{message: "Si el correo existe, recibirás un email de recuperación"})
+      {:error, _} ->
+        conn
+        |> put_status(:ok)
+        |> json(%{message: "Si el correo existe, recibirás un email de recuperación"})
+    end
+  end
+
+  def reset_password(conn, %{"token" => token, "password" => password}) do
+    case Accounts.reset_password(token, password) do
+      {:ok, _user} ->
+        conn
+        |> put_status(:ok)
+        |> json(%{message: "Contraseña actualizada exitosamente"})
+      {:error, :invalid_or_expired_token} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> json(%{error: "Token inválido o expirado"})
+    end
+  end
+
   defp generate_user_token(conn, user) do
     Phoenix.Token.sign(conn, "user auth", user.id, max_age: 86400 * 15)
   end
@@ -70,5 +102,16 @@ defmodule TodoAppWeb.AuthController do
         String.replace(acc, "%{#{key}}", to_string(value))
       end)
     end)
+  end
+  def logout(conn, _params) do
+    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
+         user = conn.assigns.current_user do
+      %TodoApp.Accounts.RevokedToken{}
+      |> TodoApp.Accounts.RevokedToken.changeset(%{token: token, user_id: user.id})
+      |> TodoApp.Repo.insert()
+      conn |> put_status(:ok) |> json(%{message: "Sesión cerrada correctamente"})
+    else
+      _ -> conn |> put_status(:unauthorized) |> json(%{error: "No autorizado"})
+    end
   end
 end
