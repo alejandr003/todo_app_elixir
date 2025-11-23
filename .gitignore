@@ -25,4 +25,14 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 todo_app-*.tar
 
+# Variables de entorno y secretos
 .env
+.env.local
+.env.production
+.env.*.local
+*.pem
+*.key
+*.crt
+
+# Docker
+docker-compose.override.yml

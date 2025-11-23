@@ -104,11 +104,21 @@ if config_env() == :prod do
   # In production you need to configure the mailer to use a different adapter.
   # Here is an example configuration for Mailgun:
   #
-  #     config :todo_app, TodoApp.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
-  #
+  config :todo_app, TodoApp.Mailer,
+    adapter: Swoosh.Adapters.SMTP,
+    relay: System.get_env("SMTP_HOST") || "smtp.gmail.com",
+    port: String.to_integer(System.get_env("SMTP_PORT") || "587"),
+    username: System.get_env("SMTP_USER"),
+    password: System.get_env("SMTP_PASSWORD"),
+    tls: :always,
+    auth: :always,
+    ssl: false,
+    retries: 2
+
+  # URL pública del backend (para links en emails)
+  config :todo_app, TodoAppWeb.Endpoint,
+    backend_url: System.get_env("BACKEND_URL") || "https://#{host}"
+
   # Most non-SMTP adapters require an API client. Swoosh supports Req, Hackney,
   # and Finch out-of-the-box. This configuration is typically done at
   # compile-time in your config/prod.exs:

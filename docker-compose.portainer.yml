@@ -1,0 +1,64 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: todo_app_prod
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - todo_db_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U todo_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: ghcr.io/alejandr003/todo_app_elixir:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Base de datos
+      DATABASE_URL: ${DATABASE_URL}
+      POOL_SIZE: "10"
+      
+      # Phoenix/Elixir
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      PHX_HOST: ${PHX_HOST}
+      PORT: "4000"
+      PHX_SERVER: "true"
+      
+      # Email SMTP
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      
+      # URL pública
+      BACKEND_URL: ${BACKEND_URL}
+    ports:
+      - "4000:4000"
+    networks:
+      - internal
+    command: ["sh", "-c", "bin/todo_app eval 'TodoApp.Release.migrate()' && bin/todo_app start"]
+    healthcheck:
+      test: ["CMD", "bin/todo_app", "rpc", "1 + 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  todo_db_data:
+    driver: local
+
+networks:
+  internal:
+    driver: bridge

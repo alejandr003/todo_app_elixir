@@ -30,7 +30,7 @@ config :todo_app, TodoAppWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "JSdpY1YomnAzyWSloSkJY4hkSF1mtdgLvKpgKbDKJU/2k06oIQhXvqw34w8WLZVC",
   watchers: [],
-  frontend_url: "http://localhost:3000"
+  frontend_url: "http://localhost:4000"
 
 # ## SSL Support
 #

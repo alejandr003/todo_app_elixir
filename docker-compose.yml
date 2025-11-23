@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-todo_app_prod}
+      POSTGRES_USER: ${POSTGRES_USER:-todo_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password required}
+    volumes:
+      - todo_db_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-todo_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Base de datos
+      DATABASE_URL: ${DATABASE_URL:?Database URL required}
+      
+      # Phoenix/Elixir
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?Secret key base required}
+      PHX_HOST: ${PHX_HOST:-localhost}
+      PORT: ${PORT:-4000}
+      
+      # Email SMTP
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:?SMTP user required}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:?SMTP password required}
+      
+      # URL pública (para links en emails)
+      BACKEND_URL: ${BACKEND_URL:-http://localhost:4000}
+      
+      # Pool de conexiones DB
+      POOL_SIZE: ${POOL_SIZE:-10}
+    ports:
+      - "${APP_PORT:-4000}:4000"
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "bin/todo_app", "rpc", "1 + 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  todo_db_data:
+    driver: local
+
+networks:
+  internal:
+    driver: bridge

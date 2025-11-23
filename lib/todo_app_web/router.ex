@@ -15,6 +15,13 @@ defmodule TodoAppWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  # Health check (sin autenticación)
+  scope "/api", TodoAppWeb do
+    pipe_through :api
+
+    get "/health", HealthController, :check
+  end
+
   # Endpoint para autenticación
   scope "/api", TodoAppWeb do
     pipe_through :api

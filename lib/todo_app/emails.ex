@@ -11,9 +11,10 @@ defmodule TodoApp.Emails do
     "priv/templates/emails/welcome.html.heex",
     [:assigns])
 
-    def send_welcome_email(user, url) do
+  def send_welcome_email(user, url) do
     assigns = %{
       user_name: user.name,
+      url: url
     }
     html_content = welcome_template(assigns)
 
