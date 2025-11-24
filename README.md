@@ -1,21 +1,39 @@
 # TodoApp
 
-To start this backend application:
+## Sobre este proyecto 📌
 
-- Run `mix setup` to install and setup dependencies
-- Implement your database in a new file `.env` and run `source .env`
-- Start Phoenix endpoint with:
-  ```
+Este es un proyecto personal de backend construido con Phoenix/Elixir. La aplicación está alojada en un **servidor local** haciendo uso de las siguientes herramientas:
+
+### Infraestructura y Sistema
+- **Ubuntu Linux**: Sistema operativo del servidor (distribución Linux)
+- **CasaOS**: Sistema de nube personal de código abierto que facilita la gestión de aplicaciones mediante Docker
+- **Docker**: Plataforma de containerización que permite aislar y ejecutar aplicaciones en contenedores independientes
+- **Portainer**: Herramienta de gestión visual para contenedores Docker, facilita la administración sin necesidad de comandos
+
+### Red y Acceso
+- **Túnel**: Servicio de tunneling para exponer el servidor local a internet de forma segura
+- **Dominio personalizado**: Nombre de dominio configurado para acceder a la API de manera profesional
+
+---
+
+## Cómo iniciar esta aplicación 🧐
+
+- Ejecuta `mix setup` para instalar y configurar dependencias
+- Implementa tu base de datos en un nuevo archivo `.env` y ejecuta `source .env`
+- Inicia el endpoint de Phoenix con:
+```bash
   mix phx.server
-  ```
-  or inside IEx:
-  ```
+```
+  o dentro de IEx:
+```bash
   iex -S mix phx.server
-  ```
+```
 
-# 📋 API REST Endpoints — TodoApp
+---
 
-## ✅ 1️⃣ REGISTRO DE USUARIO
+# API REST Endpoints
+
+## 1️⃣ REGISTRO DE USUARIO
 
 **Endpoint:** `POST /api/register`  
 **URL:** `http://localhost:4000/api/register`
@@ -29,23 +47,23 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "name": "Juan",
-    "last_name": "Pérez",
-    "email": "juan.perez@example.com",
+    "name": "Test",
+    "last_name": "Test",
+    "email": "test@test.com",
     "password": "password123",
     "password_confirmation": "password123"
   }
 }
 ```
 
-### ✅ Response — `201 Created`
+### Response — `201 Created` ✅
 ```json
 {
   "data": {
     "id": 1,
-    "name": "Juan",
-    "last_name": "Pérez",
-    "email": "juan.perez@example.com",
+    "name": "Test",
+    "last_name": "Test",
+    "email": "test@test.com",
     "token": "SFMyNTY.g3QAAAABbQAAAAVwY...",
     "inserted_at": "2025-11-09T12:30:45Z",
     "updated_at": "2025-11-09T12:30:45Z"
@@ -53,7 +71,7 @@ Content-Type: application/json
 }
 ```
 
-### ❌ Response — `422 Unprocessable Entity`
+### Response — `422 Unprocessable Entity` ❌
 ```json
 {
   "errors": {
@@ -65,7 +83,7 @@ Content-Type: application/json
 
 ---
 
-## ✅ 2️⃣ LOGIN DE USUARIO
+## 2️⃣ LOGIN DE USUARIO
 
 **Endpoint:** `POST /api/login`  
 **URL:** `http://localhost:4000/api/login`
@@ -78,32 +96,32 @@ Content-Type: application/json
 ### Request Body
 ```json
 {
-  "email": "juan.perez@example.com",
+  "email": "test@test.com",
   "password": "password123"
 }
 ```
 
-### ✅ Response — `200 OK`
+### Response — `200 OK` ✅
 ```json
 {
   "data": {
     "id": 1,
-    "name": "Juan",
-    "last_name": "Pérez",
-    "email": "juan.perez@example.com",
+    "name": "Test",
+    "last_name": "Test",
+    "email": "test@test.com",
     "token": "SFMyNTY.g3QAAAABbQAAAAVwY..."
   }
 }
 ```
 
-### ❌ Response — `401 Unauthorized`
+### Response — `401 Unauthorized` ❌
 ```json
 {
   "error": "Contraseña inválida"
 }
 ```
 
-### ❌ Response — `404 Not Found`
+### Response — `404 Not Found` ❌
 ```json
 {
   "error": "Usuario no encontrado"
@@ -111,7 +129,7 @@ Content-Type: application/json
 ```
 
 ---
-## 4️⃣ 🔑 Recuperar y cambiar contraseña
+## 4️⃣ Recuperar y cambiar contraseña 🔑
 
 ### Solicitar recuperación de contraseña
 **POST** `/api/password/forgot`
@@ -148,7 +166,7 @@ Content-Type: application/json
 
 ---
 
-## 🚪 Logout (Cerrar sesión)
+## Logout (Cerrar sesión)
 
 **POST** `/api/logout`
 
@@ -162,6 +180,46 @@ Content-Type: application/json
 }
 ```
 ---
+### 2️⃣do método de recuperar contraseña
+---
+### Solicitar recuperación de contraseña
+**POST** `/api/password/forgot`
+
+**Body:**
+```json
+{
+  "email": "test@test.com"
+}
+```
+**Respuesta exitosa:**
+```json
+{
+  "message": "Si el correo existe, se ha enviado un email con instrucciones"
+}
+```
+
+### Correo con link para cambiar contraseña
+**Revisar bandeja** `/dev/mailbox`
+
+<div align="center">
+  <img width="1497" height="530" alt="image" src="https://github.com/user-attachments/assets/a94c1202-de1c-492b-97e6-9c265c26824e" />
+</div>
+
+### Formulario con Token para cambiar la contraseña
+**URL del formulario** `/reset-password?token=8sFJiDHH0u-0eWirl9bt...`
+<div align="center">
+  <img width="790" height="444" alt="image" src="https://github.com/user-attachments/assets/ba32fc2d-4159-4be4-a8ea-b12ea58f3f7c" />
+</div>
+
+### Formulario procesa el cambio de contraseña
+**Mensaje de validación**
+<div align="center">
+<img width="620" height="287" alt="image" src="https://github.com/user-attachments/assets/0dc81fe5-54ee-4d43-866b-44724e41b287" />
+</div>
+
+---
+
+
 
 ### 5️⃣ CRUD de Notas (requiere autenticación)
 ---
