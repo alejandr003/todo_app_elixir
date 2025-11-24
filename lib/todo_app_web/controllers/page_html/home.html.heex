@@ -1,3 +1,420 @@
-<section style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
-  <h1 style="font-size: 2.5rem; color: #444; font-family: Arial, sans-serif;">Hola mundo TodoApp Elixir</h1>
-</section>
+<style>
+  :root {
+    --bg-body: #f9f8f6;
+    --bg-card: #ffffff;
+    --text-main: #222222;
+    --text-light: #555555;
+    --border-color: #e0e0e0;
+    --code-bg: #f1f1f1;
+    --code-text: #2d2d2d;
+    --accent-black: #111111;
+  }
+
+  .landing-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text-main);
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .landing-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .landing-header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: 25px 0;
+    margin-bottom: 40px;
+  }
+
+  .landing-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .landing-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-black);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .landing-github-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .landing-github-link:hover {
+    border-color: var(--accent-black);
+    background: var(--accent-black);
+    color: white;
+  }
+
+  .landing-github-link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .landing-main {
+    padding-bottom: 60px;
+  }
+
+  .landing-section {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  }
+
+  .landing-h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 10px;
+    display: inline-block;
+  }
+
+  .landing-h2 {
+    font-size: 1.6rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent-black);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .landing-h3 {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  .landing-p {
+    margin-bottom: 1rem;
+    color: var(--text-light);
+  }
+
+  .landing-ul {
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+    color: var(--text-light);
+  }
+
+  .landing-li {
+    margin-bottom: 8px;
+  }
+
+  .landing-pre {
+    background: var(--code-bg);
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e5e5;
+  }
+
+  .landing-code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 0.9rem;
+    color: var(--code-text);
+  }
+*/
+  .landing-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+  }
+
+  .landing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .landing-th, .landing-td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .landing-th {
+    background-color: #fafafa;
+    font-weight: 600;
+    color: var(--accent-black);
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+  .badge.success { background: #e6f4ea; color: #1e7e34; }
+  .badge.error { background: #fbe9e7; color: #c62828; }
+  .badge.method { background: #e8f0fe; color: #1967d2; border: 1px solid #d2e3fc; }
+
+  .landing-footer {
+    margin-top: auto;
+    padding: 30px 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border-color);
+  }
+
+  @media (max-width: 768px) {
+    .landing-section { padding: 25px; }
+    .landing-h1 { font-size: 1.8rem; }
+    .landing-brand span { display: none; }
+  }
+</style>
+
+<div class="landing-wrapper">
+  <header class="landing-header">
+    <div class="landing-container">
+      <nav class="landing-nav">
+        <a href="#" class="landing-brand">
+          <svg class="icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="28" height="20" rx="3" fill="#fff" stroke="#222"/>
+            <polyline points="7,14 11,18 7,22" stroke="#222"/>
+            <line x1="15" y1="22" x2="23" y2="22" stroke="#222"/>
+          </svg>
+          <span style="margin-left:8px;">TodoApp API</span>
+        </a>
+        <a href="https://github.com/alejandr003/todo_app_elixir" target="_blank" class="landing-github-link">>
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          Ver Repositorio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="landing-container landing-main">
+      
+    <!-- INTRODUCCIÓN -->
+    <section class="landing-section">
+      <h1 class="landing-h1">TodoApp</h1>
+      
+      <h2 class="landing-h2">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Sobre este proyecto
+      </h2>
+      <p class="landing-p">Este es un proyecto personal de backend construido con <strong>Phoenix/Elixir</strong>. La aplicación está alojada en un servidor local utilizando una arquitectura robusta de contenedores.</p>
+
+      <h3 class="landing-h3">Infraestructura y Sistema</h3>
+      <ul class="landing-ul">
+        <li class="landing-li"><strong>Ubuntu Linux:</strong> Sistema operativo del servidor.</li>
+        <li class="landing-li"><strong>CasaOS:</strong> Nube personal de código abierto para gestión Docker.</li>
+        <li class="landing-li"><strong>Docker:</strong> Containerización para aislamiento de aplicaciones.</li>
+        <li class="landing-li"><strong>Portainer:</strong> Gestión visual de contenedores.</li>
+      </ul>
+
+      <h3 class="landing-h3">Red y Acceso</h3>
+      <ul class="landing-ul">
+        <li class="landing-li"><strong>Túnel:</strong> Servicio de tunneling para exposición segura a internet.</li>
+        <li class="landing-li"><strong>Dominio personalizado:</strong> Acceso profesional a la API.</li>
+      </ul>
+
+      <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 30px 0;" />
+
+      <h2 class="landing-h2">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        Cómo iniciar esta aplicación
+      </h2>
+      <p class="landing-p">Pasos rápidos para desplegar el entorno de desarrollo:</p>
+      <ol class="landing-ul" style="margin-left: 20px;">
+        <li class="landing-li">Ejecuta <code>mix setup</code> para instalar dependencias.</li>
+        <li class="landing-li">Configura tu <code>.env</code> y cárgalo con <code>source .env</code>.</li>
+        <li class="landing-li">Inicia el servidor Phoenix:</li>
+      </ol>
+      <pre class="landing-pre"><code class="landing-code">mix phx.server
+# O modo interactivo:
+iex -S mix phx.server</code></pre>
+    </section>
+
+    <!-- API ENDPOINTS -->
+    <section class="landing-section">
+      <h1 class="landing-h1">API REST Endpoints</h1>
+
+      <!-- REGISTRO -->
+      <article>
+        <h2 class="landing-h2">1. Registro de Usuario <span class="badge method">POST</span></h2>
+        <p class="landing-p"><strong>URL:</strong> <code>/api/register</code></p>
+        
+        <h3 class="landing-h3">Request Body</h3>
+<pre class="landing-pre"><code class="landing-code">&lbrace;
+  "user": &lbrace;
+    "name": "Test",
+    "last_name": "Test",
+    "email": "test@test.com",
+    "password": "password123",
+    "password_confirmation": "password123"
+  &rbrace;
+&rbrace;</code></pre>
+
+        <h3 class="landing-h3">Response <span class="badge success">201 Created</span></h3>
+<pre class="landing-pre"><code class="landing-code">&lbrace;
+  "data": &lbrace;
+    "id": 1,
+    "email": "test@test.com",
+    "token": "SFMyNTY.g3QAAAABbQAAAAVwY...",
+    "inserted_at": "2025-11-09T12:30:45Z"
+  &rbrace;
+&rbrace;</code></pre>
+      </article>
+
+      <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 40px 0;" />
+
+      <!-- LOGIN -->
+      <article>
+        <h2 class="landing-h2">2. Login de Usuario <span class="badge method">POST</span></h2>
+        <p class="landing-p"><strong>URL:</strong> <code>/api/login</code></p>
+        
+        <h3 class="landing-h3">Request Body</h3>
+<pre class="landing-pre"><code class="landing-code">&lbrace;
+  "email": "test@test.com",
+  "password": "password123"
+&rbrace;</code></pre>
+
+        <h3 class="landing-h3">Response <span class="badge success">200 OK</span></h3>
+<pre class="landing-pre"><code class="landing-code">&lbrace;
+  "data": &lbrace;
+    "id": 1,
+    "email": "test@test.com",
+    "token": "SFMyNTY.g3QAAAABbQAAAAVwY..."
+  &rbrace;
+&rbrace;</code></pre>
+      </article>
+
+      <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 40px 0;" />
+
+      <!-- PASSWORD -->
+      <article>
+        <h2 class="landing-h2">4. Recuperar Contraseña <span class="badge method">POST</span></h2>
+        
+        <h3 class="landing-h3">Solicitar recuperación</h3>
+        <p class="landing-p"><strong>Endpoint:</strong> <code>/api/password/forgot</code></p>
+<pre class="landing-pre"><code class="landing-code">&lbrace; "email": "test@test.com" &rbrace;</code></pre>
+        
+        <h3 class="landing-h3">Cambiar contraseña con token</h3>
+        <p class="landing-p"><strong>Endpoint:</strong> <code>/api/password/reset</code></p>
+<pre class="landing-pre"><code class="landing-code">&lbrace;
+  "token": "TOKEN_DEL_EMAIL",
+  "password": "nueva_password"
+&rbrace;</code></pre>
+      </article>
+
+      <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 40px 0;" />
+
+      <!-- CRUD NOTAS -->
+      <article>
+        <h2 class="landing-h2">5. CRUD de Notas <span class="badge method">JWT</span></h2>
+        <p class="landing-p">Requiere Header: <code>Authorization: Bearer &lt;TOKEN&gt;</code></p>
+
+        <div style="background: #f8f8f8; padding: 15px; border-radius: 6px; margin-top: 15px;">
+          <p class="landing-p" style="margin: 0;"><strong>GET</strong> <code>/api/notes</code> - Listar notas</p>
+          <p class="landing-p" style="margin: 5px 0;"><strong>POST</strong> <code>/api/notes</code> - Crear nota</p>
+          <p class="landing-p" style="margin: 5px 0;"><strong>GET</strong> <code>/api/notes/:id</code> - Ver detalle</p>
+          <p class="landing-p" style="margin: 5px 0;"><strong>PUT</strong> <code>/api/notes/:id</code> - Actualizar</p>
+          <p class="landing-p" style="margin: 0;"><strong>DELETE</strong> <code>/api/notes/:id</code> - Eliminar</p>
+        </div>
+
+        <h3 class="landing-h3">Ejemplo Crear Nota (Body)</h3>
+<pre class="landing-pre"><code class="landing-code">&lbrace;
+  "title": "Nota nueva",
+  "content": "Texto de la nota"
+&rbrace;</code></pre>
+      </article>
+
+    </section>
+
+    <!-- VALIDACIONES -->
+    <section class="landing-section">
+      <h2 class="landing-h2">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        Tabla de Validaciones
+      </h2>
+      <div class="landing-table-wrapper">
+        <table class="landing-table">
+          <thead>
+            <tr>
+              <th class="landing-th">Campo</th>
+              <th class="landing-th">Validación</th>
+              <th class="landing-th">Errores Comunes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="landing-td"><code>name</code></td>
+              <td class="landing-td">Requerido, 2–50 caracteres</td>
+              <td class="landing-td">"can't be blank"</td>
+            </tr>
+            <tr>
+              <td class="landing-td"><code>last_name</code></td>
+              <td class="landing-td">Requerido, 2–50 caracteres</td>
+              <td class="landing-td">"can't be blank"</td>
+            </tr>
+            <tr>
+              <td class="landing-td"><code>email</code></td>
+              <td class="landing-td">Formato válido, único</td>
+              <td class="landing-td">"has invalid format", "already taken"</td>
+            </tr>
+            <tr>
+              <td class="landing-td"><code>password</code></td>
+              <td class="landing-td">8–100 caracteres</td>
+              <td class="landing-td">"should be 8-100 character(s)"</td>
+            </tr>
+            <tr>
+              <td class="landing-td"><code>password_confirmation</code></td>
+              <td class="landing-td">Coincidencia exacta</td>
+              <td class="landing-td">"does not match confirmation"</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="landing-footer">
+    <div class="landing-container">
+      <p class="landing-p">&copy; 2025 TodoApp API.</p>
+    </div>
+  </footer>
+</div>
