@@ -1,0 +1,10 @@
+{
+  "name": "todo_app_assets",
+  "private": true,
+  "scripts": {
+    "deploy": "tailwindcss -c tailwind.config.js -i ./css/app.css -o ../priv/static/assets/app.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0"
+  }
+}

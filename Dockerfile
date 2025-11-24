@@ -1,7 +1,6 @@
-
 FROM elixir:1.16-alpine AS builder
 
-RUN apk add --no-cache build-base git
+RUN apk add --no-cache build-base git nodejs npm
 
 WORKDIR /app
 
@@ -15,10 +14,19 @@ ENV MIX_ENV=prod
 RUN mix deps.get --only prod && \
     mix deps.compile
 
+# --- ASSETS BUILD ---
+COPY assets assets
+COPY package.json ./assets/
+WORKDIR /app/assets
+RUN npm install
+RUN npm run deploy
+WORKDIR /app
+
 COPY lib lib
 COPY priv priv
 
 RUN mix do compile, release
+# --- FIN ASSETS BUILD ---
 
 FROM alpine:3.19 AS runner
 
@@ -34,7 +42,6 @@ RUN addgroup -g 1000 app && \
 WORKDIR /app
 
 COPY --from=builder --chown=app:app /app/_build/prod/rel/todo_app ./
-
 COPY --from=builder --chown=app:app /app/priv ./priv
 
 USER app

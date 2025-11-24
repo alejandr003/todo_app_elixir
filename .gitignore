@@ -34,5 +34,8 @@ todo_app-*.tar
 *.key
 *.crt
 
+#node_modules
+/assets/node_modules/
+
 # Docker
 docker-compose.override.yml
