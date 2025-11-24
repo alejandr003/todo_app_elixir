@@ -40,10 +40,11 @@ defmodule TodoAppWeb.Router do
     resources "/notes", Notes.NotesController, except: [:new, :edit]
   end
 
-  # Ruta para formulario de cambio de contraseña
+  # Ruta para formulario de cambio de contraseña y página principal
   scope "/", TodoAppWeb do
     pipe_through :browser
 
+    get "/", PageController, :home
     get "/reset-password", PasswordController, :reset_form
     post "/reset-password", PasswordController, :reset_password
   end
