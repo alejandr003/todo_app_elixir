@@ -16,7 +16,7 @@ RUN mix deps.get --only prod && \
 
 # --- ASSETS BUILD ---
 COPY assets assets
-COPY package.json ./assets/
+COPY assets/package.json ./assets/
 WORKDIR /app/assets
 RUN npm install
 RUN npm run deploy
